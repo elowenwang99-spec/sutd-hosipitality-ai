@@ -1,0 +1,7 @@
+{
+  "name": "Copy of LinenGuard AI - Hospitality Bedding Quality Control",
+  "description": "An AI-powered system for hotel bed linen quality control, providing instant feedback to housekeepers, decision support for supervisors, and analytics for managers.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
