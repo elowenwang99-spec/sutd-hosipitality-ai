@@ -70,12 +70,7 @@ const App: React.FC = () => {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">LinenGuard AI</h1>
+            {/* Logo 和文字已被移除 */}
           </div>
           
           <div className="flex bg-slate-100 p-1 rounded-lg">
@@ -112,7 +107,7 @@ const App: React.FC = () => {
 
       <footer className="bg-white border-t border-slate-200 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
-          © 2024 LinenGuard AI - Hospitality Venture Challenge
+          © 2024 - Hospitality Quality Control Solution
         </div>
       </footer>
     </div>
