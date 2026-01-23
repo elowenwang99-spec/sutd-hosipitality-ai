@@ -12,6 +12,7 @@ const HousekeeperView: React.FC<HousekeeperViewProps> = ({ onAnalysisComplete })
   const [room, setRoom] = useState('101');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [lastResult, setLastResult] = useState<BedAnalysisResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +22,7 @@ const HousekeeperView: React.FC<HousekeeperViewProps> = ({ onAnalysisComplete })
       reader.onloadend = () => {
         setImage(reader.result as string);
         setLastResult(null);
+        setError(null);
       };
       reader.readAsDataURL(file);
     }
@@ -31,13 +33,16 @@ const HousekeeperView: React.FC<HousekeeperViewProps> = ({ onAnalysisComplete })
   const handleAnalyze = async () => {
     if (!image) return;
     setIsAnalyzing(true);
+    setError(null);
     try {
       const result = await analyzeBedImage(image, room, "Maria Garcia");
       setLastResult(result);
       onAnalysisComplete(result);
-    } catch (error) {
-      console.error("Analysis failed", error);
-      alert("Analysis failed. Please try again.");
+    } catch (err: any) {
+      console.error("Analysis failed", err);
+      // 提取更具体的错误信息
+      const errorMsg = err.message || "Unknown error occurred";
+      setError(`Analysis Error: ${errorMsg}`);
     } finally {
       setIsAnalyzing(false);
     }
@@ -78,6 +83,13 @@ const HousekeeperView: React.FC<HousekeeperViewProps> = ({ onAnalysisComplete })
             )}
             <input type="file" accept="image/*" capture="environment" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
           </div>
+
+          {error && (
+            <div className="p-3 bg-rose-50 border border-rose-100 rounded-lg">
+              <p className="text-xs text-rose-600 font-medium">{error}</p>
+              <p className="text-[10px] text-rose-400 mt-1">Tip: Check if VITE_API_KEY is set in Vercel and redeploy.</p>
+            </div>
+          )}
 
           <button
             disabled={!image || isAnalyzing}
