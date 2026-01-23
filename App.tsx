@@ -10,10 +10,21 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<BedAnalysisResult[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('linenGuard_history');
-    if (saved) {
-      setHistory(JSON.parse(saved));
-    } else {
+    const loadHistory = () => {
+      try {
+        const saved = localStorage.getItem('linenGuard_history');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            setHistory(parsed);
+            return;
+          }
+        }
+      } catch (e) {
+        console.error("Failed to parse history from localStorage", e);
+      }
+      
+      // 默认初始化数据
       const initial: BedAnalysisResult[] = [
         {
           id: '1',
@@ -22,7 +33,8 @@ const App: React.FC = () => {
           housekeeperName: 'Maria Garcia',
           status: 'UNMADE',
           confidence: 0.95,
-          imageUrl: 'https://picsum.photos/seed/bed1/600/400',
+          imageUrl: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=800',
+          unmadeReasons: ['bedsheet_wrinkles']
         },
         {
           id: '2',
@@ -31,12 +43,14 @@ const App: React.FC = () => {
           housekeeperName: 'John Doe',
           status: 'MADE',
           confidence: 0.99,
-          imageUrl: 'https://picsum.photos/seed/bed2/600/400',
+          imageUrl: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=800',
         }
       ];
       setHistory(initial);
       localStorage.setItem('linenGuard_history', JSON.stringify(initial));
-    }
+    };
+
+    loadHistory();
   }, []);
 
   const addResult = (res: BedAnalysisResult) => {
@@ -96,7 +110,7 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 py-4">
+      <footer className="bg-white border-t border-slate-200 py-4 mt-auto">
         <div className="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
           © 2024 LinenGuard AI - Hospitality Venture Challenge
         </div>
