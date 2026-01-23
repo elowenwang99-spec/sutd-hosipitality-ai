@@ -11,6 +11,7 @@ export interface BedAnalysisResult {
   timestamp: number;
   housekeeperName: string;
   status: 'MADE' | 'UNMADE';
+  unmadeReasons?: string[];
   confidence: number; // 0-1
   imageUrl: string;
   reviewedBy?: string;
